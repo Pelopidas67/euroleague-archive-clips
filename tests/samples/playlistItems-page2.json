@@ -10,6 +10,74 @@
     {
       "kind": "youtube#playlistItem",
       "etag": "sample-etag",
+      "id": "UExpdGVtLSIsVezShort001",
+      "snippet": {
+        "publishedAt": "2025-10-05T07:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Vezenkov from deep! #EuroLeague",
+        "description": "Sample description of VezShort001",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VezShort001/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "VezShort001"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "VezShort001",
+        "videoPublishedAt": "2025-10-05T07:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsMvpVez00001",
+      "snippet": {
+        "publishedAt": "2026-05-20T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sasha Vezenkov is the 2025-26 Turkish Airlines EuroLeague MVP",
+        "description": "Sample description of MvpVez00001",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MvpVez00001/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "MvpVez00001"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "MvpVez00001",
+        "videoPublishedAt": "2026-05-20T10:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
       "id": "UExpdGVtLSIsEfesMadRd2a",
       "snippet": {
         "publishedAt": "2025-10-04T07:00:00Z",

@@ -1,0 +1,195 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "sample-etag",
+  "regionCode": "GR",
+  "pageInfo": {
+    "totalResults": 1000000,
+    "resultsPerPage": 25
+  },
+  "nextPageToken": "CBkQAA",
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezHl01"
+      },
+      "snippet": {
+        "publishedAt": "2026-03-01T10:00:00Z",
+        "channelId": "UCotherChannel0000000001",
+        "title": "Sasha Vezenkov | Olympiacos Highlights 2025-26",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezHl01/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Hoops Greece",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-03-01T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezMvp1"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-21T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sasha Vezenkov named EuroLeague MVP | Interview",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezMvp1/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-05-21T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezSh01"
+      },
+      "snippet": {
+        "publishedAt": "2025-11-01T10:00:00Z",
+        "channelId": "UCotherChannel0000000002",
+        "title": "Vezenkov dunk | Olympiacos",
+        "description": "Olympiacos #shorts",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezSh01/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Ball Clips",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-11-01T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezNba1"
+      },
+      "snippet": {
+        "publishedAt": "2024-01-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000005",
+        "title": "Sasha Vezenkov Sacramento Kings highlights",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezNba1/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "NBA Fan",
+        "liveBroadcastContent": "none",
+        "publishTime": "2024-01-10T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezVlog"
+      },
+      "snippet": {
+        "publishedAt": "2025-12-01T10:00:00Z",
+        "channelId": "UCotherChannel0000000006",
+        "title": "Sasha Vezenkov &amp; family vlog",
+        "description": "our holidays",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezVlog/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Vlogs",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-12-01T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezRd03"
+      },
+      "snippet": {
+        "publishedAt": "2025-10-11T10:00:00Z",
+        "channelId": "UCotherChannel0000000001",
+        "title": "Vezenkov 30 points vs Real Madrid | Olympiacos",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezRd03/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Hoops Greece",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-10-11T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchVezLong"
+      },
+      "snippet": {
+        "publishedAt": "2026-04-01T10:00:00Z",
+        "channelId": "UCotherChannel0000000003",
+        "title": "Sasha Vezenkov full season breakdown | EuroLeague",
+        "description": "Subscribe! #shorts #basketball",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezLong/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Long Form",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-04-01T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UCotherChannel0000000001"
+      },
+      "snippet": {
+        "publishedAt": "2020-01-01T00:00:00Z",
+        "channelId": "UCotherChannel0000000001",
+        "title": "Hoops Greece",
+        "description": "",
+        "channelTitle": "Hoops Greece"
+      }
+    }
+  ]
+}

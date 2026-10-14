@@ -1,11 +1,17 @@
 # Builds the clips index once a day (and when "Run workflow" is pressed) and publishes it on the
 # "index" branch of this repository, where the app downloads it:
 #   https://raw.githubusercontent.com/<owner>/<this repo>/index/clips-index.json
+# The same branch keeps search-state.json: which players were searched when, and the video IDs
+# found (no titles). It is carried from one run to the next.
+#
+# "Run workflow" offers a mode:
+#   daily  - what the schedule runs;
+#   sample - searches about 10 sample players with 2 or 3 query variants each and keeps a report
+#            (with titles and channels) as a workflow artifact for 7 days, ENCRYPTED with the
+#            REPORT_PASSWORD secret, because this repository is public. Nothing is published.
 #
 # The YouTube API key is the encrypted secret YOUTUBE_API_KEY (Settings > Secrets and variables >
 # Actions). It is only handed to the build step, and the script never prints it.
-# No raw YouTube responses are saved: this repository is public, so its workflow artifacts would be
-# too.
 
 name: Clips index
 
@@ -13,6 +19,12 @@ on:
   schedule:
     - cron: "17 4 * * *"   # every day at 04:17 UTC
   workflow_dispatch:        # the "Run workflow" button
+    inputs:
+      mode:
+        description: "daily = build and publish the index; sample = a report for tuning the searches"
+        type: choice
+        options: [daily, sample]
+        default: daily
 
 permissions:
   contents: write   # push the index branch
@@ -25,29 +37,69 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
+    env:
+      MODE: ${{ github.event.inputs.mode || 'daily' }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Test the index builder (offline)
         run: python3 -m unittest discover -s tests -v
 
+      - name: Get the search state from the last run
+        if: env.MODE == 'daily'
+        run: |
+          mkdir -p "$RUNNER_TEMP/index"
+          if git fetch -q --depth 1 origin index 2>/dev/null && git show FETCH_HEAD:search-state.json > "$RUNNER_TEMP/index/search-state.json" 2>/dev/null; then
+            echo "Search state found."
+          else
+            rm -f "$RUNNER_TEMP/index/search-state.json"
+            echo "No search state yet: the searches start from the beginning."
+          fi
+
       - name: Build the clips index
+        if: env.MODE == 'daily'
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: python3 build_index.py --out "$RUNNER_TEMP/index/clips-index.json"
+        run: python3 build_index.py --out "$RUNNER_TEMP/index/clips-index.json" --state "$RUNNER_TEMP/index/search-state.json"
 
       - name: "Publish the index branch (one commit, only today's index)"
+        if: env.MODE == 'daily'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan publish
           git rm -rq --cached .
           cp "$RUNNER_TEMP/index/clips-index.json" clips-index.json
-          git add clips-index.json
+          cp "$RUNNER_TEMP/index/search-state.json" search-state.json
+          git add clips-index.json search-state.json
           git commit -q -m "Clips index $(date -u +%Y-%m-%d)"
           git push -fq origin publish:index
           echo "Published: https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/index/clips-index.json"
+
+      - name: Make the sample report
+        if: env.MODE == 'sample'
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          REPORT_PASSWORD: ${{ secrets.REPORT_PASSWORD }}
+        run: |
+          if [ -z "$REPORT_PASSWORD" ]; then
+            echo "error: add the REPORT_PASSWORD secret first (docs/CLIPS_SETUP.md, sample mode)"; exit 2
+          fi
+          mkdir -p "$RUNNER_TEMP/report"
+          python3 build_index.py --sample-report "$RUNNER_TEMP/report/sample-report.md"
+          openssl enc -aes-256-cbc -pbkdf2 -salt -in "$RUNNER_TEMP/report/sample-report.md" \
+            -out sample-report.md.enc -pass env:REPORT_PASSWORD
+          rm -f "$RUNNER_TEMP/report/sample-report.md"
+
+      - name: Keep the encrypted report for 7 days
+        if: env.MODE == 'sample'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-report
+          path: sample-report.md.enc
+          retention-days: 7
+          if-no-files-found: error
 
       # GitHub switches off a public repository's scheduled workflows after 60 days without
       # activity; enabling it again resets that clock.

@@ -4,15 +4,21 @@
 Run by GitHub Actions once a day (see .github/workflows/clips.yml). It:
 
 1. reads the uploads playlist of the official EuroLeague Basketball YouTube channel with
-   playlistItems.list (1 quota unit per 50 videos; search.list is never used);
+   playlistItems.list (1 quota unit per 50 videos);
 2. reads the EuroLeague data it needs from the public EuroLeague API (the same endpoints the app
    uses): the seasons, each season's games and each season's players;
-3. matches each video to our data: a player clip by the player's name in the title, a game's
+3. matches each upload to our data: a player clip by the player's name in the title, a game's
    highlights by the two clubs (and the round when the title has one) in that season;
-4. checks the matched videos with videos.list (1 unit per 50): only public, embeddable videos that
-   are not "made for kids" are kept;
-5. writes the index: video IDs, our season, player and game codes, and the date fetched. No YouTube
-   titles, descriptions, thumbnails or dates are ever written.
+4. searches YouTube for players (search.list: any channel, embeddable videos, safe search), a few
+   dozen players a day in priority order (the current season first), each searched again within 25
+   days; a result is kept only when it is clearly about that player (his name in the title and
+   EuroLeague, one of his clubs or basketball words) and is put on the season page it belongs to;
+   award videos (MVP, Rising Star, All-EuroLeague...) are marked as such;
+5. checks every video with videos.list (1 unit per 50): only public, embeddable videos that are not
+   "made for kids" and are not YouTube Shorts are kept (see shorts_reason);
+6. writes the index: video IDs, our season, player and game codes, "award" and "official" marks, and
+   the date fetched. No YouTube titles, descriptions, thumbnails or dates are ever written. The
+   search state (which players were searched when, and the IDs found) goes to its own file.
 
 The whole index is rebuilt on every run, so a video that was deleted, made private or can no
 longer be embedded drops out at the next run (YouTube's rule: stored API data is refreshed at
@@ -24,8 +30,10 @@ secret). It is never printed: no request URL is ever printed or put in an error 
 Only the Python standard library is used.
 
 The YouTube parsing below follows YouTube's documented response formats
-(developers.google.com/youtube/v3/docs: channels.list, playlistItems.list, videos.list).
-UNVERIFIED against a live response until the first real run.
+(developers.google.com/youtube/v3/docs: channels.list, playlistItems.list, videos.list,
+search.list). channels, playlistItems and videos (status) were confirmed by the first real run on
+14 October 2026; search.list and videos.list's snippet, contentDetails and player parts are
+UNVERIFIED until the next one.
 """
 
 from __future__ import annotations
@@ -59,6 +67,19 @@ HARD_CAP = 5_000           # the cap can never be set above half the daily limit
 UPLOADS_SHARE = 0.6        # of the cap, for reading the uploads; the rest checks the matches
 COST = {"channels": 1, "playlistItems": 1, "videos": 1}  # documented units per list request
 PAGE = 50                  # the most items one list request returns
+
+# Player searches (search.list). Google limits search.list to 100 calls a day, apart from the
+# 10,000 units of everything else. The daily run uses at most SEARCHES_PER_DAY of them, the sample
+# mode at most SAMPLE_SEARCHES, so both on the same day still stay below 100.
+SEARCH_CALLS_LIMIT = 100   # Google's daily limit for search.list calls
+SEARCHES_PER_DAY = 65      # the daily run's share (CLIPS_SEARCHES_PER_DAY can lower it)
+SAMPLE_SEARCHES = 25       # the sample mode's share
+REFRESH_DAYS = 25          # a searched player is searched again after this many days...
+KEEP_DAYS = 28             # ...and his search results are dropped after this many (YouTube: 30)
+SEARCH_RESULTS = 25        # maxResults of one search
+MAX_SEARCH_CLIPS = 12      # clips kept per player from one search
+DEFAULT_QUERY = "B"        # the query variant the daily run uses (see QUERY_VARIANTS)
+SHORT_MAX_SECONDS = 180    # YouTube Shorts are at most 3 minutes long
 
 INDEX_FORMAT = 1
 MAX_PLAYERS_PER_CLIP = 3   # a title naming more players is a compilation, not a player's clip
@@ -153,16 +174,74 @@ def parse_playlist_page(obj: dict) -> tuple[list[dict], str | None]:
     return out, obj.get("nextPageToken") or None
 
 
+def parse_duration(value: str | None) -> int | None:
+    """ISO 8601 durations as videos.list gives them ("PT1M27S", "PT2H3M", "P0D") -> seconds."""
+    m = re.fullmatch(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?", value or "")
+    if not m or not value:
+        return None
+    d, h, mi, se = (int(x) if x else 0 for x in m.groups())
+    return ((d * 24 + h) * 60 + mi) * 60 + se
+
+
 def parse_videos(obj: dict) -> dict[str, dict]:
-    """videos.list, part=status:
-    { "items": [ { "id": "…", "status": { "uploadStatus", "privacyStatus", "embeddable",
-                   "madeForKids", "selfDeclaredMadeForKids", … } } ] }
-    A video that was deleted is simply missing from "items"."""
+    """videos.list, part=snippet,status,contentDetails,player with maxWidth:
+    { "items": [ { "id": "…",
+                   "snippet": { "channelId", "channelTitle", "title", "description", "tags": [] },
+                   "status": { "uploadStatus", "privacyStatus", "embeddable", "madeForKids", … },
+                   "contentDetails": { "duration": "PT1M27S", … },
+                   "player": { "embedHtml", "embedWidth", "embedHeight" } } ] }
+    embedWidth / embedHeight are documented as returned when the request gives maxWidth or
+    maxHeight; they follow the video's aspect ratio. A deleted video is missing from "items".
+    The title, description and tags are used here only to spot Shorts, never written to the index."""
     out = {}
     for item in obj.get("items") or []:
-        if item.get("id"):
-            out[item["id"]] = item.get("status") or {}
+        if not item.get("id"):
+            continue
+        snippet = item.get("snippet") or {}
+        player = item.get("player") or {}
+
+        def number(v):
+            try:
+                return int(v)
+            except (TypeError, ValueError):
+                return None
+        out[item["id"]] = {
+            "status": item.get("status") or {},
+            "duration": parse_duration((item.get("contentDetails") or {}).get("duration")),
+            "width": number(player.get("embedWidth")),
+            "height": number(player.get("embedHeight")),
+            "title": snippet.get("title", ""),
+            "description": snippet.get("description", ""),
+            "tags": snippet.get("tags") or [],
+            "channel": snippet.get("channelId", ""),
+            "channel_title": snippet.get("channelTitle", ""),
+        }
     return out
+
+
+SHORTS_TAG = re.compile(r"(?<![\w#])#shorts?\b", re.IGNORECASE)
+
+
+def shorts_reason(video: dict | None) -> str | None:
+    """Why a video counts as a YouTube Short, or None. Only documented data, several signals
+    together; the duration alone never decides (a 1:27 horizontal MVP video is kept):
+    - vertical: the embedded player is taller than wide (player.embedHeight > embedWidth);
+    - square and at most 3 minutes long;
+    - "#shorts" / "#short" in the title, description or tags, and at most 3 minutes long (or of
+      unknown length)."""
+    if not video:
+        return None
+    w, h, seconds = video.get("width"), video.get("height"), video.get("duration")
+    short_enough = seconds is None or seconds <= SHORT_MAX_SECONDS
+    if w and h and h > w:
+        return "vertical video"
+    if w and h and h == w and seconds is not None and seconds <= SHORT_MAX_SECONDS:
+        return "square video of at most 3 minutes"
+    tags = " ".join(f"#{t.lstrip('#')}" for t in video.get("tags") or [])
+    text = " ".join([video.get("title", ""), video.get("description", ""), tags])
+    if SHORTS_TAG.search(text) and short_enough:
+        return "#shorts and at most 3 minutes"
+    return None
 
 
 def usable(status: dict | None) -> bool:
@@ -208,6 +287,15 @@ TITLE_WORDS = {  # words often in titles: never a player's name on their own
 NAME_SUFFIXES = {"jr", "sr", "ii", "iii", "iv"}
 
 
+def natural_name(api_name: str) -> str:
+    """"VEZENKOV, SASHA" -> "Sasha Vezenkov"; "PORTER JR., OTTO" -> "Otto Porter Jr."."""
+    last, _, first = api_name.partition(",")
+
+    def nice(words: str) -> str:
+        return " ".join(w[:1].upper() + w[1:].lower() if not w.isdigit() else w for w in words.split())
+    return f"{nice(first)} {nice(last)}".strip()
+
+
 class Season:
     """One season of our data: its clubs (with the names titles may use), games and players."""
 
@@ -219,12 +307,17 @@ class Season:
         self.end = end
         self.games = []      # {"code", "round", "date", "clubs": {local, road}}
         clubs = {}           # code -> set of names
+        self.club_short: dict[str, str] = {}  # code -> the club's short name ("Olympiacos", "Real Madrid")
         for g in games_json.get("data") or []:
             local = ((g.get("local") or {}).get("club") or {})
             road = ((g.get("road") or {}).get("club") or {})
             if not local.get("code") or not road.get("code") or not g.get("played", False):
                 continue
             for c in (local, road):
+                short, full = c.get("abbreviatedName") or "", c.get("name") or ""
+                if len(short) <= 4 and full.startswith(short + " ") and full.count(" ") == 1:
+                    short = full  # "Real" -> "Real Madrid"
+                self.club_short.setdefault(c["code"], short or full)
                 names = clubs.setdefault(c["code"], set())
                 for key in ("name", "abbreviatedName", "editorialName"):
                     if c.get(key):
@@ -264,7 +357,14 @@ class Season:
                 continue
             last, _, first = name.partition(",")
             last_words = [w for w in normalize(last).split() if w not in NAME_SUFFIXES]
-            seen[code] = {"code": code, "first": normalize(first), "last": " ".join(last_words)}
+            team = (p.get("team") or {}).get("code") or ""
+            try:
+                minutes = float(row.get("minutesPlayed") or 0)
+            except (TypeError, ValueError):
+                minutes = 0.0
+            seen[code] = {"code": code, "first": normalize(first), "last": " ".join(last_words),
+                          "natural": natural_name(name), "clubs": [c for c in team.split(";") if c],
+                          "minutes": minutes}
         players = list(seen.values())
         # A surname alone identifies a player only if no other player of the season has that name
         # (as surname or first name), it is not a word titles use anyway, and it is long enough.
@@ -362,15 +462,232 @@ def match(video: dict, season: Season) -> dict | None:
     return entry
 
 
+# --- Player searches -------------------------------------------------------------------------------
+
+# The query variants (the sample mode compares them; the daily run uses DEFAULT_QUERY).
+QUERY_VARIANTS = {
+    "A": "{name} highlights",
+    "B": "{name} EuroLeague",
+    "C": "{name} {club} basketball",
+}
+STRONG_CONTEXT = ("euroleague", "euro league", "final four", "turkish airlines")
+WEAK_CONTEXT = ("basketball", "basket", "highlights", "highlight", "mvp", "dunk", "dunks", "points",
+                "pts", "rebounds", "assists", "buzzer", "game winner", "crossover", "nba", "fiba",
+                "eurobasket", "acb", "liga endesa", "career", "mix", "mixtape", "best plays")
+AWARD_PHRASES = ("mvp", "most valuable player", "rising star", "all euroleague", "best defender",
+                 "defensive player of the year", "sixth man", "top scorer", "alphonso ford",
+                 "award", "trophy", "of the decade", "greatest players", "hall of fame")
+NOT_HIM = ("women", "womens", "wnba", "u18", "u16", "u20", "high school")
+COMMON_SURNAMES = {
+    "smith", "johnson", "williams", "brown", "jones", "james", "miller", "davis", "wilson",
+    "anderson", "taylor", "thomas", "moore", "jackson", "white", "harris", "martin", "thompson",
+    "garcia", "martinez", "robinson", "clark", "rodriguez", "lewis", "lee", "walker", "hall", "allen",
+    "young", "king", "wright", "scott", "green", "baker", "adams", "nelson", "hill", "campbell",
+    "mitchell", "roberts", "carter", "phillips", "evans", "turner", "parker", "collins", "edwards",
+    "stewart", "morris", "murphy", "cook", "rogers", "morgan", "cooper", "peterson", "reed", "bailey",
+    "bell", "kelly", "howard", "ward", "cox", "richardson", "wood", "watson", "brooks", "bennett",
+    "gray", "hughes", "price", "sanders", "myers", "long", "ross", "foster", "gonzalez", "lopez",
+    "perez", "sanchez", "hernandez", "fernandez", "diaz", "torres", "ramirez", "silva", "santos",
+    "jovanovic", "petrovic", "nikolic", "markovic", "popovic", "papadopoulos", "kim", "wang",
+}
+
+
+def parse_search(obj: dict) -> list[dict]:
+    """search.list, part=snippet, type=video:
+    { "items": [ { "id": { "kind": "youtube#video", "videoId" },
+                   "snippet": { "publishedAt", "channelId", "title", "description",
+                                "channelTitle", … } } ] }
+    HTML entities in titles (&amp; &#39; &quot;) are decoded for the checks."""
+    import html
+    out = []
+    for item in obj.get("items") or []:
+        vid = (item.get("id") or {}).get("videoId")
+        if not vid:
+            continue  # a channel or playlist result
+        sn = item.get("snippet") or {}
+        published = parse_time(sn.get("publishedAt"))
+        if published is None:
+            continue
+        out.append({"id": vid, "title": html.unescape(sn.get("title", "")),
+                    "description": html.unescape(sn.get("description", "")),
+                    "channel": sn.get("channelId", ""), "channel_title": html.unescape(sn.get("channelTitle", "")),
+                    "published": published})
+    return out
+
+
+class Career:
+    """One player across our seasons: what the searches and their checks need."""
+
+    def __init__(self, code: str):
+        self.code = code
+        self.name = ""          # "Sasha Vezenkov"
+        self.first = ""         # normalized
+        self.last = ""
+        self.seasons: list[str] = []   # season codes he played, oldest first
+        self.clubs: list[str] = []     # club codes, most minutes first
+        self.club_names: set[str] = set()
+        self.minutes = 0.0
+        self.distinctive = False  # a surname no other EuroLeague player had, and not a common one
+
+    @property
+    def full(self) -> str:
+        return f"{self.first} {self.last}".strip()
+
+
+def careers(data: dict[str, Season]) -> dict[str, Career]:
+    out: dict[str, Career] = {}
+    club_minutes: dict[str, dict[str, float]] = {}
+    surname_owners: dict[str, set[str]] = {}
+    for code in sorted(data):
+        season = data[code]
+        for p in season.players:
+            c = out.setdefault(p["code"], Career(p["code"]))
+            c.name, c.first, c.last = p["natural"], p["first"], p["last"]  # the latest spelling
+            if code not in c.seasons:
+                c.seasons.append(code)
+            c.minutes += p["minutes"]
+            surname_owners.setdefault(p["last"], set()).add(p["code"])
+            for club in p["clubs"]:
+                club_minutes.setdefault(p["code"], {})
+                club_minutes[p["code"]][club] = club_minutes[p["code"]].get(club, 0) + p["minutes"]
+                c.club_names.update(season.club_names.get(club, []))
+    for c in out.values():
+        mins = club_minutes.get(c.code, {})
+        c.clubs = sorted(mins, key=lambda k: mins[k], reverse=True)
+        c.distinctive = (c.last not in COMMON_SURNAMES and len(c.last.replace(" ", "")) >= 5
+                         and len(surname_owners.get(c.last, set())) == 1)
+    return out
+
+
+def relevant(result: dict, career: Career) -> tuple[bool, str]:
+    """Is this search result clearly about this player? (kept, reason in plain words)"""
+    title = normalize(result.get("title", ""))
+    text = title + " " + normalize(result.get("description", ""))
+    if not career.last or not contains_phrase(title, career.last):
+        return False, "his surname is not in the title"
+    if any(contains_phrase(text, w) for w in NOT_HIM):
+        return False, "about women's or youth basketball"
+    full = bool(career.first) and contains_phrase(title, career.full)
+    club_in_title = any(contains_phrase(title, n) for n in career.club_names)
+    club_anywhere = club_in_title or any(contains_phrase(text, n) for n in career.club_names)
+    strong_title = club_in_title or any(contains_phrase(title, w) for w in STRONG_CONTEXT)
+    strong = strong_title or club_anywhere or any(contains_phrase(text, w) for w in STRONG_CONTEXT)
+    weak = any(contains_phrase(text, w) for w in WEAK_CONTEXT)
+    if full and strong:
+        return True, "full name, and EuroLeague or one of his clubs"
+    if full and weak and career.distinctive:
+        return True, "full name (a name only he had) and basketball words"
+    if not full and strong_title:
+        return True, "surname, with EuroLeague or one of his clubs in the title"
+    if full and weak:
+        return False, "full name and basketball words, but the name is shared or common: needs EuroLeague or his club"
+    if full:
+        return False, "full name, but nothing about basketball"
+    return False, "surname only, without EuroLeague or his club in the title"
+
+
+def is_award(title: str) -> bool:
+    t = normalize(title)
+    return any(contains_phrase(t, w) for w in AWARD_PHRASES)
+
+
+def assign_season(result: dict, career: Career, seasons: dict[str, dict]) -> tuple[str | None, str]:
+    """The season page a result belongs on: a season he played that the title names, else the one
+    it was published in; after his last EuroLeague season, "*" (all his pages)."""
+    title = normalize(result.get("title", ""))
+    named = season_alias_in(title, seasons)
+    if named:
+        if named in career.seasons:
+            return named, "the season in the title"
+        return None, "the title names a season he did not play in the EuroLeague"
+    published = result["published"]
+    for code in career.seasons:
+        s = seasons.get(code) or {}
+        if s.get("start") and s.get("end") and s["start"] <= published <= s["end"]:
+            return code, "published during that season"
+    last = seasons.get(career.seasons[-1]) if career.seasons else None
+    if last and last.get("end") and published > last["end"]:
+        return "*", "published after his last EuroLeague season"
+    return None, "published while he was not in the EuroLeague"
+
+
+def query_for(career: Career, variant: str, club_short: dict[str, str] | None = None) -> str:
+    club = (club_short or {}).get(career.clubs[0], "") if career.clubs else ""
+    return " ".join(QUERY_VARIANTS[variant].format(name=career.name, club=club).split())
+
+
+def search_player(yt: "YouTube", career: Career, variant: str, club_short: dict[str, str]) -> list[dict]:
+    obj = yt.list("search", {"part": "snippet", "q": query_for(career, variant, club_short), "type": "video",
+                             "videoEmbeddable": "true", "safeSearch": "strict",
+                             "maxResults": SEARCH_RESULTS})
+    return parse_search(obj)
+
+
+def pacific_day(now: dt.datetime) -> str:
+    """Google's daily quota resets at midnight Pacific time."""
+    try:
+        from zoneinfo import ZoneInfo
+        return now.astimezone(ZoneInfo("America/Los_Angeles")).date().isoformat()
+    except Exception:  # no time zone data: Pacific standard time
+        return (now.astimezone(dt.timezone.utc) - dt.timedelta(hours=8)).date().isoformat()
+
+
+def priority(data: dict[str, Season]) -> list[str]:
+    """Players in search order: the current season's (most minutes first), then each earlier
+    season's, newest first. Each player once, at his most recent season's place."""
+    order, seen = [], set()
+    for code in sorted(data, reverse=True):
+        for p in sorted(data[code].players, key=lambda p: p["minutes"], reverse=True):
+            if p["code"] not in seen:
+                seen.add(p["code"])
+                order.append(p["code"])
+    return order
+
+
+def plan_searches(order: list[str], state: dict, now: dt.datetime, per_day: int) -> list[str]:
+    """Today's searches: the players due (never searched, or REFRESH_DAYS ago), in priority order,
+    among the first per_day x REFRESH_DAYS players (the most that can be kept fresh), up to what is
+    left of today's calls."""
+    today = now.date()
+    day = pacific_day(now)
+    used = state.get("calls", 0) if state.get("day") == day else 0
+    budget = max(0, min(per_day, SEARCH_CALLS_LIMIT - 5) - used)
+    covered = order[:per_day * REFRESH_DAYS]
+    due = []
+    for code in covered:
+        entry = state.get("players", {}).get(code)
+        age = (today - dt.date.fromisoformat(entry["on"])).days if entry else None
+        if entry is None or age >= REFRESH_DAYS:
+            due.append(code)
+        if len(due) >= budget:
+            break
+    return due
+
+
+def age_state(state: dict, now: dt.datetime) -> dict:
+    """Drops search results KEEP_DAYS old or older (never kept past YouTube's 30 days)."""
+    today = now.date()
+    players = {code: e for code, e in (state.get("players") or {}).items()
+               if (today - dt.date.fromisoformat(e["on"])).days < KEEP_DAYS}
+    return {"format": 1, "day": state.get("day"), "calls": state.get("calls", 0), "players": players}
+
+
 # --- Quota -----------------------------------------------------------------------------------------
 
 class Quota:
-    def __init__(self, cap: int):
+    def __init__(self, cap: int, search_calls: int = 0):
         self.cap = max(1, min(int(cap), HARD_CAP))
         self.used = 0
         self.by_method: dict[str, int] = {}
+        self.search_cap = max(0, min(int(search_calls), SEARCH_CALLS_LIMIT - 5))
+        self.search_calls = 0
 
     def spend(self, method: str, limit: int | None = None) -> None:
+        if method == "search":  # its own daily limit (calls), apart from the units
+            if self.search_calls + 1 > self.search_cap:
+                raise QuotaCap(method)
+            self.search_calls += 1
+            return
         cost = COST[method]
         if self.used + cost > min(self.cap, limit if limit is not None else self.cap):
             raise QuotaCap(method)
@@ -475,13 +792,9 @@ def find_channel(yt: YouTube, log) -> dict:
     return by_handle
 
 
-def build(yt: YouTube, euroleague: EuroLeague, now: dt.datetime, log=print) -> dict:
-    """Builds the index. Raises on errors that leave nothing worth publishing."""
+def read_uploads(yt: YouTube, channel: dict, log) -> tuple[list[dict], bool]:
+    """The channel's uploads, newest first, until the end or this part's share of the cap."""
     complete = True
-    channel = find_channel(yt, log)
-    log(f"channel: {channel['title']} ({channel['handle']}, {channel['id']}), uploads {channel['uploads']}")
-
-    # 1. The uploads, newest first, until the end or this part's share of the cap.
     uploads_limit = int(yt.quota.cap * UPLOADS_SHARE)
     videos, token = [], None
     try:
@@ -507,42 +820,20 @@ def build(yt: YouTube, euroleague: EuroLeague, now: dt.datetime, log=print) -> d
         if v["id"] not in seen:
             seen.add(v["id"])
             unique.append(v)
-    videos = sorted(unique, key=lambda v: v["published"], reverse=True)
-    log(f"uploads read: {len(videos)}")
-    if not videos:
-        raise RuntimeError("no uploads were read, so nothing is published")
+    return sorted(unique, key=lambda v: v["published"], reverse=True), complete
 
-    # 2. Our data for the seasons those videos fall in.
-    seasons = euroleague.seasons()
-    by_season: dict[str, list[dict]] = {}
-    for v in videos:
-        code = season_for(v, seasons)
-        if code:
-            by_season.setdefault(code, []).append(v)
-    data = {code: euroleague.season(code, seasons[code]) for code in sorted(by_season)}
-    log(f"EuroLeague seasons read: {len(data)} ({euroleague.requests} requests)")
 
-    # 3. Matching.
-    matched = []
-    for code, vs in by_season.items():
-        for v in vs:
-            entry = match(v, data[code])
-            if entry:
-                matched.append((v["published"], entry))
-    matched.sort(key=lambda m: m[0], reverse=True)
-    log(f"matched: {len(matched)} "
-        f"({sum(1 for _, e in matched if 'players' in e)} player clips, "
-        f"{sum(1 for _, e in matched if 'players' not in e)} game highlights)")
-
-    # 4. Only public, embeddable videos that are not made for kids.
-    statuses: dict[str, dict] = {}
-    checked = set()
-    ids = [e["v"] for _, e in matched]
+def check_videos(yt: YouTube, ids: list[str], log) -> tuple[dict[str, dict], set[str], bool]:
+    """videos.list for these IDs, 50 at a time: (details, IDs checked, complete)."""
+    details: dict[str, dict] = {}
+    checked: set[str] = set()
+    complete = True
     try:
         for i in range(0, len(ids), PAGE):
             batch = ids[i:i + PAGE]
-            statuses.update(parse_videos(yt.list("videos", {"part": "status", "id": ",".join(batch),
-                                                            "maxResults": PAGE})))
+            details.update(parse_videos(yt.list("videos", {"part": "snippet,status,contentDetails,player",
+                                                           "id": ",".join(batch), "maxWidth": 640,
+                                                           "maxResults": PAGE})))
             checked.update(batch)
     except QuotaCap:
         complete = False
@@ -552,38 +843,276 @@ def build(yt: YouTube, euroleague: EuroLeague, now: dt.datetime, log=print) -> d
             raise
         complete = False
         log(f"warning: {e}; unchecked videos are left out")
-    excluded = {"not checked": 0, "gone": 0, "not public": 0, "not embeddable": 0, "made for kids": 0,
-                "no made-for-kids answer": 0, "other": 0}
-    clips = []
-    for _, e in matched:
-        if e["v"] not in checked:
-            excluded["not checked"] += 1
+    return details, checked, complete
+
+
+def exclusion(video_id: str, details: dict[str, dict], checked: set[str]) -> str | None:
+    """Why a video may not be listed, or None."""
+    if video_id not in checked:
+        return "not checked"
+    d = details.get(video_id)
+    if d is None:
+        return "gone"
+    s = d["status"]
+    if s.get("privacyStatus") != "public":
+        return "not public"
+    if s.get("embeddable") is not True:
+        return "not embeddable"
+    if s.get("madeForKids") is True or s.get("selfDeclaredMadeForKids") is True:
+        return "made for kids"
+    if "madeForKids" not in s:
+        return "no made-for-kids answer"
+    if not usable(s):
+        return "other"
+    if shorts_reason(d):
+        return "Shorts"
+    return None
+
+
+def club_short_names(data: dict[str, Season]) -> dict[str, str]:
+    """Each club's short name, as in its latest season ("Olympiacos", "Real Madrid", "Monaco")."""
+    out: dict[str, str] = {}
+    for code in sorted(data):
+        out.update(data[code].club_short)
+    return out
+
+
+def run_searches(yt: YouTube, data: dict[str, Season], seasons: dict[str, dict], state: dict,
+                 now: dt.datetime, per_day: int, official_channel: str, log) -> dict:
+    """Today's player searches; returns the new state (results kept per player, with dates)."""
+    state = age_state(state or {}, now)
+    if per_day <= 0:
+        return state
+    all_careers = careers(data)
+    order = [c for c in priority(data) if c in all_careers]
+    due = plan_searches(order, state, now, per_day)
+    shorts = club_short_names(data)
+    day = pacific_day(now)
+    calls_before = state["calls"] if state.get("day") == day else 0
+    searched = 0
+    try:
+        for code in due:
+            career = all_careers[code]
+            results = search_player(yt, career, DEFAULT_QUERY, shorts)
+            searched += 1
+            clips = []
+            for r in results:
+                ok, _ = relevant(r, career)
+                if not ok:
+                    continue
+                season, _ = assign_season(r, career, seasons)
+                if season is None:
+                    continue
+                clip = {"v": r["id"], "season": season}
+                if is_award(r["title"]):
+                    clip["kind"] = "award"
+                if r["channel"] == official_channel:
+                    clip["official"] = True
+                clips.append(clip)
+                if len(clips) >= MAX_SEARCH_CLIPS:
+                    break
+            state["players"][code] = {"on": now.date().isoformat(), "clips": clips}
+    except QuotaCap:
+        log("warning: stopped searching at today's limit of search calls")
+    except YouTubeError as e:
+        if not e.quota:
+            raise
+        log(f"warning: {e}; stopped searching for today")
+    state["day"] = day
+    state["calls"] = calls_before + searched
+    covered = min(len(order), per_day * REFRESH_DAYS)
+    fresh = sum(1 for c in order[:covered] if c in state["players"])
+    log(f"player searches: {searched} today ({state['calls']} search.list calls on {day}, Pacific day; "
+        f"limit {SEARCH_CALLS_LIMIT}); {fresh} of the {covered} players covered have fresh results "
+        f"(of {len(order)} players in all)")
+    return state
+
+
+def build(yt: YouTube, euroleague: EuroLeague, now: dt.datetime, log=print, state: dict | None = None,
+          searches_per_day: int = 0, state_out: dict | None = None) -> dict:
+    """Builds the index. With searches, the new search state (which players were searched when,
+    and their results: video IDs and our codes only) is put into `state_out` for its own file.
+    Raises on errors that leave nothing worth publishing."""
+    channel = find_channel(yt, log)
+    log(f"channel: {channel['title']} ({channel['handle']}, {channel['id']}), uploads {channel['uploads']}")
+
+    # 1. The official channel's uploads.
+    videos, complete = read_uploads(yt, channel, log)
+    log(f"uploads read: {len(videos)}")
+    if len(videos) == 20_000:
+        log("note: YouTube lists only the newest 20,000 uploads of a channel; older ones are not reached")
+    if not videos:
+        raise RuntimeError("no uploads were read, so nothing is published")
+
+    # 2. Our data, every season.
+    seasons = euroleague.seasons()
+    data = {code: euroleague.season(code, seasons[code]) for code in sorted(seasons)}
+    log(f"EuroLeague seasons read: {len(data)} ({euroleague.requests} requests)")
+
+    # 3. Matching the uploads.
+    matched = []
+    for v in videos:
+        code = season_for(v, seasons)
+        if code and code in data:
+            entry = match(v, data[code])
+            if entry:
+                if "players" in entry and is_award(v["title"]):
+                    entry["kind"] = "award"
+                entry["official"] = True
+                matched.append((v["published"], entry))
+    matched.sort(key=lambda m: m[0], reverse=True)
+    log(f"matched: {len(matched)} "
+        f"({sum(1 for _, e in matched if 'players' in e)} player clips, "
+        f"{sum(1 for _, e in matched if 'players' not in e)} game highlights)")
+
+    # 4. Player searches across YouTube (spread over the days).
+    new_state = run_searches(yt, data, seasons, state or {}, now, searches_per_day, channel["id"], log)
+    searched = []
+    for code, e in new_state["players"].items():
+        for clip in e["clips"]:
+            searched.append({**clip, "players": [code]})
+
+    # 5. Only public, embeddable videos that are not made for kids and not Shorts.
+    entries = [e for _, e in matched] + searched
+    ids = list(dict.fromkeys(e["v"] for e in entries))
+    details, checked, checks_complete = check_videos(yt, ids, log)
+    complete = complete and checks_complete
+    excluded = {k: 0 for k in ("not checked", "gone", "not public", "not embeddable", "made for kids",
+                               "no made-for-kids answer", "other", "Shorts")}
+    clips, by_id = [], {}
+    for e in entries:
+        why = exclusion(e["v"], details, checked)
+        if why:
+            excluded[why] += 1
             continue
-        s = statuses.get(e["v"])
-        if s is None:
-            excluded["gone"] += 1
-        elif s.get("privacyStatus") != "public":
-            excluded["not public"] += 1
-        elif s.get("embeddable") is not True:
-            excluded["not embeddable"] += 1
-        elif s.get("madeForKids") is True or s.get("selfDeclaredMadeForKids") is True:
-            excluded["made for kids"] += 1
-        elif "madeForKids" not in s:
-            excluded["no made-for-kids answer"] += 1
-        elif not usable(s):
-            excluded["other"] += 1
-        else:
-            clips.append(e)
+        if e["v"] in by_id:  # the same video from the channel and a search: one entry
+            first = by_id[e["v"]]
+            first["players"] = sorted(set(first.get("players", [])) | set(e.get("players", [])))
+            if e.get("kind") == "award":
+                first["kind"] = "award"
+            continue
+        e = dict(e)
+        by_id[e["v"]] = e
+        clips.append(e)
+    # Search results that no longer pass are dropped from the state too.
+    for code, e in new_state["players"].items():
+        e["clips"] = [c for c in e["clips"] if c["v"] in by_id]
     log("excluded: " + ", ".join(f"{n} {k}" for k, n in excluded.items()))
-    if matched and not clips:
+    log(f"Shorts excluded this run: {excluded['Shorts']}")
+    if entries and not clips:
         raise RuntimeError("no video could be checked, so nothing is published")
 
-    return {
+    index = {
         "format": INDEX_FORMAT,
         "fetched": now.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "complete": complete,
         "clips": clips,
     }
+    if state_out is not None:
+        state_out.clear()
+        state_out.update(new_state)
+    return index
+
+
+# --- Sample mode -----------------------------------------------------------------------------------
+
+# Five well-known players with three query variants each, five lesser-known ones from different
+# seasons with two: 25 search.list calls.
+SAMPLE_PLAYERS = [
+    ("003469", "ABC"),  # Sasha Vezenkov
+    ("005985", "ABC"),  # Mike James
+    ("001926", "ABC"),  # Kostas Sloukas
+    ("JUO", "ABC"),     # Vassilis Spanoulis
+    ("003941", "ABC"),  # Nikola Milutinov
+    ("CTN", "AB"),      # Charles Smith (2004-05; a very common name)
+    ("BTR", "AB"),      # Tanoka Beard (2004-05)
+    ("JWO", "AB"),      # Pete Mickeal (2012-13)
+    ("004172", "AB"),   # Mateusz Ponitka (2019-20)
+    ("010781", "AB"),   # Iffe Lundberg (2025-26)
+]
+
+
+def cell(text) -> str:
+    return " ".join(str(text if text is not None else "").replace("|", "/").split())
+
+
+def sample_report(yt: YouTube, euroleague: EuroLeague, now: dt.datetime, log=print,
+                  players: list[tuple[str, str]] = SAMPLE_PLAYERS) -> str:
+    """Searches the sample players with each query variant and explains every decision. The
+    report has YouTube titles and channels, so it is only ever stored encrypted (see the workflow);
+    the log gets counts only."""
+    channel = find_channel(yt, log)
+    seasons = euroleague.seasons()
+    data = {code: euroleague.season(code, seasons[code]) for code in sorted(seasons)}
+    all_careers = careers(data)
+    shorts = club_short_names(data)
+    runs = []  # (career, variant, query, results)
+    try:
+        for code, variants in players:
+            career = all_careers.get(code)
+            if not career:
+                log(f"sample: player {code} is not in the EuroLeague data")
+                continue
+            for variant in variants:
+                runs.append((career, variant, query_for(career, variant, shorts),
+                             search_player(yt, career, variant, shorts)))
+    except QuotaCap:
+        log("warning: the sample stopped at its share of search calls")
+    except YouTubeError as e:
+        if not e.quota and not runs:
+            raise
+        log(f"warning: {e}; the sample stopped early")
+    ids = list(dict.fromkeys(r["id"] for _, _, _, results in runs for r in results))
+    details, checked, _ = check_videos(yt, ids, log)
+
+    lines = [f"# Clips sample report ({now.astimezone(dt.timezone.utc):%Y-%m-%d %H:%M} UTC)", "",
+             "Private: it has YouTube titles and channels. Delete it after sending it.", "",
+             "Columns: decision; reason; title; channel; length; embedded size (width x height); the season page "
+             "it would go on (* = all his pages); award?; official EuroLeague channel?; link.", ""]
+    totals: dict[str, list[int]] = {}
+    current = None
+    for career, variant, query, results in runs:
+        if career.code != current:
+            current = career.code
+            lines += [f"## {career.name} ({career.code})", "",
+                      f"EuroLeague seasons {career.seasons[0]} to {career.seasons[-1]} ({len(career.seasons)}); "
+                      f"clubs {', '.join(career.clubs)}; surname only he had: {'yes' if career.distinctive else 'no'}", ""]
+        lines += [f"### Variant {variant}: `{query}` ({len(results)} results)", "",
+                  "| # | Decision | Reason | Title | Channel | Length | Size | Page | Award | Official | Video |",
+                  "|---|---|---|---|---|---|---|---|---|---|---|"]
+        kept = 0
+        for i, r in enumerate(results, 1):
+            d = details.get(r["id"]) or {}
+            ok, reason = relevant(r, career)
+            season = ""
+            if ok:
+                season, why = assign_season(r, career, seasons)
+                if season is None:
+                    ok, reason, season = False, why, ""
+            if ok:
+                bad = exclusion(r["id"], details, checked)
+                if bad:
+                    ok = False
+                    reason = f"{bad}: {shorts_reason(d)}" if bad == "Shorts" else bad
+            kept += ok
+            length = d.get("duration")
+            size = f"{d.get('width')}x{d.get('height')}" if d.get("width") and d.get("height") else "?"
+            lines.append("| " + " | ".join(cell(x) for x in [
+                i, "KEEP" if ok else "reject", reason, r["title"], r["channel_title"],
+                f"{length // 60}:{length % 60:02d}" if length is not None else "?", size, season,
+                "yes" if is_award(r["title"]) else "", "yes" if r["channel"] == channel["id"] else "",
+                f"https://www.youtube.com/watch?v={r['id']}"]) + " |")
+            totals.setdefault(variant, [0, 0])
+        totals.setdefault(variant, [0, 0])
+        totals[variant][0] += kept
+        totals[variant][1] += len(results)
+        lines.append("")
+    lines += ["## Summary", "", "| Variant | Query | Kept | Results |", "|---|---|---|---|"]
+    for variant in sorted(totals):
+        lines.append(f"| {variant} | `{QUERY_VARIANTS[variant]}` | {totals[variant][0]} | {totals[variant][1]} |")
+    log(f"sample: {len(runs)} searches, {len(ids)} videos looked at; "
+        + ", ".join(f"variant {v} kept {t[0]} of {t[1]}" for v, t in sorted(totals.items())))
+    return "\n".join(lines) + "\n"
 
 
 def write_index(index: dict, path: str) -> None:
@@ -595,18 +1124,36 @@ def write_index(index: dict, path: str) -> None:
     os.replace(tmp, path)
 
 
+def read_state(path: str | None) -> dict:
+    if not path or not os.path.exists(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            state = json.load(f)
+        return state if isinstance(state, dict) and state.get("format") == 1 else {}
+    except (OSError, ValueError):
+        return {}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--out", default="out/clips-index.json")
+    parser.add_argument("--state", help="the search state file (read, then written back)")
     parser.add_argument("--cap", type=int, default=int(os.environ.get("CLIPS_QUOTA_CAP", DEFAULT_CAP)),
                         help=f"YouTube quota units this run may use (at most {HARD_CAP})")
+    parser.add_argument("--searches-per-day", type=int,
+                        default=int(os.environ.get("CLIPS_SEARCHES_PER_DAY", SEARCHES_PER_DAY)),
+                        help=f"player searches (search.list calls) a day, at most {SEARCH_CALLS_LIMIT - 5}")
+    parser.add_argument("--sample-report", help="sample mode: write the report here instead of an index")
     args = parser.parse_args(argv)
 
     key = os.environ.get("YOUTUBE_API_KEY", "").strip()
     if not key:
         print("error: the YOUTUBE_API_KEY secret is not set for this workflow", file=sys.stderr)
         return 2
-    quota = Quota(args.cap)
+    sample = bool(args.sample_report)
+    per_day = 0 if sample else max(0, min(args.searches_per_day, SEARCH_CALLS_LIMIT - 5 - SAMPLE_SEARCHES))
+    quota = Quota(args.cap, SAMPLE_SEARCHES if sample else per_day)
     yt = YouTube(key, quota)
     lines = []
 
@@ -616,22 +1163,35 @@ def main(argv: list[str] | None = None) -> int:
         print(line, flush=True)
 
     status = 0
+    now = dt.datetime.now(dt.timezone.utc)
     try:
-        index = build(yt, EuroLeague(), dt.datetime.now(dt.timezone.utc), log)
-        write_index(index, args.out)
-        log(f"index written: {len(index['clips'])} clips, complete: {str(index['complete']).lower()}")
-        if not index["complete"]:
-            print("::warning::The clips index is incomplete this run (see the log).")
+        if sample:
+            report = sample_report(yt, EuroLeague(), now, log)
+            os.makedirs(os.path.dirname(os.path.abspath(args.sample_report)), exist_ok=True)
+            with open(args.sample_report, "w", encoding="utf-8") as f:
+                f.write(report.replace(key, "***"))
+            log("sample report written (it is stored encrypted, never in the log)")
+        else:
+            new_state: dict = {}
+            index = build(yt, EuroLeague(), now, log, read_state(args.state), per_day, new_state)
+            write_index(index, args.out)
+            if args.state:
+                write_index(new_state, args.state)
+            log(f"index written: {len(index['clips'])} clips, complete: {str(index['complete']).lower()}")
+            if not index["complete"]:
+                print("::warning::The clips index is incomplete this run (see the log).")
     except (YouTubeError, RuntimeError, QuotaCap, ValueError) as e:
         log(f"error: {e}")
         status = 1
     log(f"YouTube quota used this run: {quota.used} units "
         f"({', '.join(f'{m} {n}' for m, n in sorted(quota.by_method.items())) or 'none'}); "
         f"cap {quota.cap}, daily limit {DAILY_LIMIT}")
+    log(f"search.list calls this run: {quota.search_calls} (this run may use {quota.search_cap}; "
+        f"Google's limit is {SEARCH_CALLS_LIMIT} a day)")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
-            f.write("## Clips index\n\n" + "\n".join(f"- {l}" for l in lines) + "\n")
+            f.write(("## Clips sample\n\n" if sample else "## Clips index\n\n") + "\n".join(f"- {l}" for l in lines) + "\n")
     return status
 
 

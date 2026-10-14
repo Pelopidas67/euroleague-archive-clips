@@ -1,0 +1,82 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "sample-etag",
+  "pageInfo": {
+    "totalResults": 1000,
+    "resultsPerPage": 25
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchMJ00001"
+      },
+      "snippet": {
+        "publishedAt": "2025-11-20T10:00:00Z",
+        "channelId": "UCotherChannel0000000004",
+        "title": "Mike James 30 PTS | AS Monaco EuroLeague",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchMJ00001/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Monaco Fans",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-11-20T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchMJcomic"
+      },
+      "snippet": {
+        "publishedAt": "2025-11-21T10:00:00Z",
+        "channelId": "UCotherChannel0000000007",
+        "title": "Mike James - stand-up comedy special",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchMJcomic/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Comedy",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-11-21T10:00:00Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "sample-etag",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "SrchMJnba01"
+      },
+      "snippet": {
+        "publishedAt": "2025-12-01T10:00:00Z",
+        "channelId": "UCotherChannel0000000008",
+        "title": "Mike James career highlights",
+        "description": "best dunks and buzzer beaters",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchMJnba01/default.jpg",
+            "width": 120,
+            "height": 90
+          }
+        },
+        "channelTitle": "Hoops",
+        "liveBroadcastContent": "none",
+        "publishTime": "2025-12-01T10:00:00Z"
+      }
+    }
+  ]
+}

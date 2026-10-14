@@ -2,14 +2,27 @@
   "kind": "youtube#videoListResponse",
   "etag": "sample-etag",
   "pageInfo": {
-    "totalResults": 8,
-    "resultsPerPage": 8
+    "totalResults": 16,
+    "resultsPerPage": 16
   },
   "items": [
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "PlayoffG2aa",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PlayoffG2aa/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -17,12 +30,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/PlayoffG2aa\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "NoEmbedRd4a",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NoEmbedRd4a/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -30,12 +67,36 @@
         "embeddable": false,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/NoEmbedRd4a\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "Vezenkov30a",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Vezenkov30a/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -43,12 +104,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/Vezenkov30a\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "MikeJamesBB",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MikeJamesBB/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -56,12 +141,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT58S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/MikeJamesBB\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "EfesMadRd2a",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/EfesMadRd2a/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -69,12 +178,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/EfesMadRd2a\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "LarkinPriv1",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LarkinPriv1/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "private",
@@ -82,12 +215,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/LarkinPriv1\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "LlullKids01",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LlullKids01/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -95,12 +252,36 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": true
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/LlullKids01\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     },
     {
       "kind": "youtube#video",
       "etag": "sample-etag",
       "id": "DeColoMastr",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sample title",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DeColoMastr/default.jpg"
+          }
+        }
+      },
       "status": {
         "uploadStatus": "processed",
         "privacyStatus": "public",
@@ -108,6 +289,316 @@
         "embeddable": true,
         "publicStatsViewable": true,
         "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M30S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/DeColoMastr\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "VezShort001",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Vezenkov from deep! #EuroLeague",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VezShort001/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT24S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"203\" height=\"360\" src=\"//www.youtube.com/embed/VezShort001\"></iframe>",
+        "embedWidth": "203",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "MvpVez00001",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sasha Vezenkov is the 2025-26 Turkish Airlines EuroLeague MVP",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MvpVez00001/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT1M27S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/MvpVez00001\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchVezHl01",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000001",
+        "title": "Sasha Vezenkov | Olympiacos Highlights 2025-26",
+        "description": "Sample description",
+        "channelTitle": "Hoops Greece",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezHl01/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT6M10S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/SrchVezHl01\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchVezMvp1",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sasha Vezenkov named EuroLeague MVP | Interview",
+        "description": "Sample description",
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezMvp1/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT3M05S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/SrchVezMvp1\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchVezSh01",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000002",
+        "title": "Vezenkov dunk | Olympiacos",
+        "description": "Olympiacos #shorts",
+        "channelTitle": "Ball Clips",
+        "tags": [
+          "shorts",
+          "basketball"
+        ],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezSh01/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT40S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"360\" height=\"360\" src=\"//www.youtube.com/embed/SrchVezSh01\"></iframe>",
+        "embedWidth": "360",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchVezRd03",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000001",
+        "title": "Vezenkov 30 points vs Real Madrid | Olympiacos",
+        "description": "Sample description",
+        "channelTitle": "Hoops Greece",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezRd03/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT2M00S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/SrchVezRd03\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchVezLong",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000003",
+        "title": "Sasha Vezenkov full season breakdown | EuroLeague",
+        "description": "Subscribe! #shorts #basketball",
+        "channelTitle": "Long Form",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchVezLong/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT12M00S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/SrchVezLong\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "SrchMJ00001",
+      "snippet": {
+        "publishedAt": "2025-10-10T10:00:00Z",
+        "channelId": "UCotherChannel0000000004",
+        "title": "Mike James 30 PTS | AS Monaco EuroLeague",
+        "description": "Sample description",
+        "channelTitle": "Monaco Fans",
+        "tags": [],
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SrchMJ00001/default.jpg"
+          }
+        }
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      },
+      "contentDetails": {
+        "duration": "PT4M00S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false"
+      },
+      "player": {
+        "embedHtml": "<iframe width=\"640\" height=\"360\" src=\"//www.youtube.com/embed/SrchMJ00001\"></iframe>",
+        "embedWidth": "640",
+        "embedHeight": "360"
       }
     }
   ]

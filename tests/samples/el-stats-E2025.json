@@ -4,12 +4,13 @@
     {
       "player": {
         "code": "P006",
-        "name": "VEZENKOV, ALEKSANDER",
+        "name": "VEZENKOV, SASHA",
         "team": {
           "code": "OLY"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 1150.0
     },
     {
       "player": {
@@ -19,7 +20,8 @@
           "code": "MAD"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 800.0
     },
     {
       "player": {
@@ -29,7 +31,8 @@
           "code": "MAD"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 700.0
     },
     {
       "player": {
@@ -39,7 +42,8 @@
           "code": "PRS"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 1100.0
     },
     {
       "player": {
@@ -49,7 +53,8 @@
           "code": "IST"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 650.0
     },
     {
       "player": {
@@ -59,7 +64,8 @@
           "code": "ULK"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 300.0
     },
     {
       "player": {
@@ -69,7 +75,8 @@
           "code": "PRS"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 250.0
     },
     {
       "player": {
@@ -79,7 +86,8 @@
           "code": "ULK"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 600.0
     },
     {
       "player": {
@@ -89,7 +97,8 @@
           "code": "OLY"
         }
       },
-      "gamesPlayed": 3.0
+      "gamesPlayed": 3.0,
+      "minutesPlayed": 500.0
     }
   ]
 }
