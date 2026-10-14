@@ -1,0 +1,58 @@
+# Builds the clips index once a day (and when "Run workflow" is pressed) and publishes it on the
+# "index" branch of this repository, where the app downloads it:
+#   https://raw.githubusercontent.com/<owner>/<this repo>/index/clips-index.json
+#
+# The YouTube API key is the encrypted secret YOUTUBE_API_KEY (Settings > Secrets and variables >
+# Actions). It is only handed to the build step, and the script never prints it.
+# No raw YouTube responses are saved: this repository is public, so its workflow artifacts would be
+# too.
+
+name: Clips index
+
+on:
+  schedule:
+    - cron: "17 4 * * *"   # every day at 04:17 UTC
+  workflow_dispatch:        # the "Run workflow" button
+
+permissions:
+  contents: write   # push the index branch
+  actions: write    # keep this daily schedule switched on (see the last step)
+
+concurrency:
+  group: clips-index
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test the index builder (offline)
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Build the clips index
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python3 build_index.py --out "$RUNNER_TEMP/index/clips-index.json"
+
+      - name: "Publish the index branch (one commit, only today's index)"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan publish
+          git rm -rq --cached .
+          cp "$RUNNER_TEMP/index/clips-index.json" clips-index.json
+          git add clips-index.json
+          git commit -q -m "Clips index $(date -u +%Y-%m-%d)"
+          git push -fq origin publish:index
+          echo "Published: https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/index/clips-index.json"
+
+      # GitHub switches off a public repository's scheduled workflows after 60 days without
+      # activity; enabling it again resets that clock.
+      - name: Keep the daily schedule switched on
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/clips.yml/enable" || true

@@ -1,0 +1,284 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "sample-etag",
+  "nextPageToken": "EAAaBlBUOkNESQ",
+  "pageInfo": {
+    "totalResults": 14,
+    "resultsPerPage": 7
+  },
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsPlayoffG2aa",
+      "snippet": {
+        "publishedAt": "2026-04-23T09:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Olympiacos vs Real Madrid | Game 2 | Playoffs Highlights",
+        "description": "Sample description of PlayoffG2aa",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PlayoffG2aa/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/PlayoffG2aa/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "PlayoffG2aa"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "PlayoffG2aa",
+        "videoPublishedAt": "2026-04-23T09:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsNoEmbedRd4a",
+      "snippet": {
+        "publishedAt": "2025-10-18T08:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Fenerbahce Beko - Anadolu Efes | Highlights | Round 4",
+        "description": "Sample description of NoEmbedRd4a",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NoEmbedRd4a/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NoEmbedRd4a/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 1,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "NoEmbedRd4a"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "NoEmbedRd4a",
+        "videoPublishedAt": "2025-10-18T08:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsVezenkov30a",
+      "snippet": {
+        "publishedAt": "2025-10-11T10:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sasha Vezenkov drops 30 vs Real Madrid! | Round 3, 2025-26",
+        "description": "Sample description of Vezenkov30a",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Vezenkov30a/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Vezenkov30a/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 2,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "Vezenkov30a"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "Vezenkov30a",
+        "videoPublishedAt": "2025-10-11T10:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsMikeJamesBB",
+      "snippet": {
+        "publishedAt": "2025-10-11T09:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Mike James buzzer-beater!",
+        "description": "Sample description of MikeJamesBB",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MikeJamesBB/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MikeJamesBB/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 3,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "MikeJamesBB"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "MikeJamesBB",
+        "videoPublishedAt": "2025-10-11T09:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsSmithSlam01",
+      "snippet": {
+        "publishedAt": "2025-10-10T23:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Smith with the slam",
+        "description": "Sample description of SmithSlam01",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/SmithSlam01/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/SmithSlam01/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 4,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "SmithSlam01"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "SmithSlam01",
+        "videoPublishedAt": "2025-10-10T23:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsEuroCupHez1",
+      "snippet": {
+        "publishedAt": "2025-10-09T12:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "EuroCup: Hezonja-like dunk from Paris",
+        "description": "Sample description of EuroCupHez1",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/EuroCupHez1/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/EuroCupHez1/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 5,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "EuroCupHez1"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "EuroCupHez1",
+        "videoPublishedAt": "2025-10-09T12:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsTop10Round3",
+      "snippet": {
+        "publishedAt": "2025-10-12T12:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Top 10 Plays: Vezenkov, Llull, Hezonja, Larkin | Round 3",
+        "description": "Sample description of Top10Round3",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Top10Round3/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Top10Round3/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 6,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "Top10Round3"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "Top10Round3",
+        "videoPublishedAt": "2025-10-12T12:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    }
+  ]
+}

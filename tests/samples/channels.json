@@ -1,0 +1,39 @@
+{
+  "kind": "youtube#channelListResponse",
+  "etag": "sample-etag",
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 5
+  },
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "etag": "sample-etag",
+      "id": "UCGr3nR_XH9r6E5b09ZJAT9w",
+      "snippet": {
+        "title": "EUROLEAGUE BASKETBALL",
+        "description": "Sample description",
+        "customUrl": "@euroleague",
+        "publishedAt": "2007-03-01T10:00:00Z",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/sample=s88",
+            "width": 88,
+            "height": 88
+          }
+        },
+        "localized": {
+          "title": "EUROLEAGUE BASKETBALL",
+          "description": "Sample description"
+        },
+        "country": "ES"
+      },
+      "contentDetails": {
+        "relatedPlaylists": {
+          "likes": "",
+          "uploads": "UUGr3nR_XH9r6E5b09ZJAT9w"
+        }
+      }
+    }
+  ]
+}

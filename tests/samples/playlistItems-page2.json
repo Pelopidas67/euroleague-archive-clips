@@ -1,0 +1,284 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "sample-etag",
+  "prevPageToken": "EAEaBlBUOkNESQ",
+  "pageInfo": {
+    "totalResults": 14,
+    "resultsPerPage": 7
+  },
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsEfesMadRd2a",
+      "snippet": {
+        "publishedAt": "2025-10-04T07:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Anadolu Efes - Real Madrid | Highlights | Round 2 | EuroLeague 2025-26",
+        "description": "Sample description of EfesMadRd2a",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/EfesMadRd2a/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/EfesMadRd2a/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 7,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "EfesMadRd2a"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "EfesMadRd2a",
+        "videoPublishedAt": "2025-10-04T07:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsLarkinPriv1",
+      "snippet": {
+        "publishedAt": "2025-10-04T06:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Shane Larkin highlights",
+        "description": "Sample description of LarkinPriv1",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LarkinPriv1/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LarkinPriv1/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 8,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "LarkinPriv1"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "LarkinPriv1",
+        "videoPublishedAt": "2025-10-04T06:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsLlullKids01",
+      "snippet": {
+        "publishedAt": "2025-10-03T06:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Sergio Llull best moments",
+        "description": "Sample description of LlullKids01",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LlullKids01/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LlullKids01/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 9,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "LlullKids01"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "LlullKids01",
+        "videoPublishedAt": "2025-10-03T06:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsHezonjaGone",
+      "snippet": {
+        "publishedAt": "2025-10-03T05:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Mario Hezonja with the big dunk",
+        "description": "Sample description of HezonjaGone",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HezonjaGone/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HezonjaGone/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 10,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "HezonjaGone"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "HezonjaGone",
+        "videoPublishedAt": "2025-10-03T05:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsPrivateItem",
+      "snippet": {
+        "publishedAt": "2025-10-02T05:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Private video",
+        "description": "Sample description of PrivateItem",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/PrivateItem/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/PrivateItem/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 11,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "PrivateItem"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "PrivateItem",
+        "videoPublishedAt": "2025-10-02T05:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "private"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsDeColoMastr",
+      "snippet": {
+        "publishedAt": "2025-10-02T04:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Nando De Colo masterclass",
+        "description": "Sample description of DeColoMastr",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DeColoMastr/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DeColoMastr/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 12,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "DeColoMastr"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "DeColoMastr",
+        "videoPublishedAt": "2025-10-02T04:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "sample-etag",
+      "id": "UExpdGVtLSIsOff2019Clip",
+      "snippet": {
+        "publishedAt": "1999-05-01T04:00:00Z",
+        "channelId": "UCGr3nR_XH9r6E5b09ZJAT9w",
+        "title": "Old video from before our seasons",
+        "description": "Sample description of Off2019Clip",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Off2019Clip/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Off2019Clip/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          }
+        },
+        "channelTitle": "EUROLEAGUE BASKETBALL",
+        "playlistId": "UUGr3nR_XH9r6E5b09ZJAT9w",
+        "position": 13,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "Off2019Clip"
+        },
+        "videoOwnerChannelTitle": "EUROLEAGUE BASKETBALL",
+        "videoOwnerChannelId": "UCGr3nR_XH9r6E5b09ZJAT9w"
+      },
+      "contentDetails": {
+        "videoId": "Off2019Clip",
+        "videoPublishedAt": "1999-05-01T04:00:00Z"
+      },
+      "status": {
+        "privacyStatus": "public"
+      }
+    }
+  ]
+}

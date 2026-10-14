@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "name": "EuroLeague 2025-26",
+      "code": "E2025",
+      "alias": "2025-26",
+      "competitionCode": "E",
+      "year": 2025,
+      "startDate": "2025-07-01T00:00:00",
+      "endDate": "2026-06-30T23:59:59"
+    },
+    {
+      "name": "EuroLeague 2024-25",
+      "code": "E2024",
+      "alias": "2024-25",
+      "competitionCode": "E",
+      "year": 2024,
+      "startDate": "2024-07-01T00:00:00",
+      "endDate": "2025-06-30T23:59:59"
+    }
+  ],
+  "total": 2
+}

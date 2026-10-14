@@ -1,0 +1,114 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "sample-etag",
+  "pageInfo": {
+    "totalResults": 8,
+    "resultsPerPage": 8
+  },
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "PlayoffG2aa",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "NoEmbedRd4a",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": false,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "Vezenkov30a",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "MikeJamesBB",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "EfesMadRd2a",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "LarkinPriv1",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "private",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "LlullKids01",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": true
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "sample-etag",
+      "id": "DeColoMastr",
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true,
+        "madeForKids": false
+      }
+    }
+  ]
+}

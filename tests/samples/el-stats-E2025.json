@@ -1,0 +1,95 @@
+{
+  "total": 9,
+  "players": [
+    {
+      "player": {
+        "code": "P006",
+        "name": "VEZENKOV, ALEKSANDER",
+        "team": {
+          "code": "OLY"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P007",
+        "name": "LLULL, SERGIO",
+        "team": {
+          "code": "MAD"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P008",
+        "name": "HEZONJA, MARIO",
+        "team": {
+          "code": "MAD"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P009",
+        "name": "JAMES, MIKE",
+        "team": {
+          "code": "PRS"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P010",
+        "name": "LARKIN, SHANE",
+        "team": {
+          "code": "IST"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P011",
+        "name": "SMITH, JOHN",
+        "team": {
+          "code": "ULK"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P012",
+        "name": "SMITH, MICHAEL",
+        "team": {
+          "code": "PRS"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P013",
+        "name": "DE COLO, NANDO",
+        "team": {
+          "code": "ULK"
+        }
+      },
+      "gamesPlayed": 3.0
+    },
+    {
+      "player": {
+        "code": "P014",
+        "name": "PORTER JR., OTTO",
+        "team": {
+          "code": "OLY"
+        }
+      },
+      "gamesPlayed": 3.0
+    }
+  ]
+}

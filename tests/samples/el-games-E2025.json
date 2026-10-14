@@ -1,0 +1,215 @@
+{
+  "data": [
+    {
+      "identifier": "E2025_12",
+      "gameCode": 12,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "RS"
+      },
+      "round": 2,
+      "roundAlias": "Round 2",
+      "played": true,
+      "utcDate": "2025-10-03T18:30:00Z",
+      "local": {
+        "club": {
+          "code": "IST",
+          "name": "Anadolu Efes Istanbul",
+          "abbreviatedName": "Anadolu Efes",
+          "editorialName": "Anadolu Efes",
+          "tvCode": "IST",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "MAD",
+          "name": "Real Madrid",
+          "abbreviatedName": "Real Madrid",
+          "editorialName": "Real Madrid",
+          "tvCode": "MAD",
+          "isVirtual": false
+        }
+      }
+    },
+    {
+      "identifier": "E2025_25",
+      "gameCode": 25,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "RS"
+      },
+      "round": 3,
+      "roundAlias": "Round 3",
+      "played": true,
+      "utcDate": "2025-10-10T19:00:00Z",
+      "local": {
+        "club": {
+          "code": "OLY",
+          "name": "Olympiacos Piraeus",
+          "abbreviatedName": "Olympiacos",
+          "editorialName": "Olympiacos",
+          "tvCode": "OLY",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "MAD",
+          "name": "Real Madrid",
+          "abbreviatedName": "Real Madrid",
+          "editorialName": "Real Madrid",
+          "tvCode": "MAD",
+          "isVirtual": false
+        }
+      }
+    },
+    {
+      "identifier": "E2025_40",
+      "gameCode": 40,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "RS"
+      },
+      "round": 4,
+      "roundAlias": "Round 4",
+      "played": true,
+      "utcDate": "2025-10-17T17:45:00Z",
+      "local": {
+        "club": {
+          "code": "ULK",
+          "name": "Fenerbahce Beko Istanbul",
+          "abbreviatedName": "Fenerbahce",
+          "editorialName": "Fenerbahce Beko",
+          "tvCode": "ULK",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "IST",
+          "name": "Anadolu Efes Istanbul",
+          "abbreviatedName": "Anadolu Efes",
+          "editorialName": "Anadolu Efes",
+          "tvCode": "IST",
+          "isVirtual": false
+        }
+      }
+    },
+    {
+      "identifier": "E2025_41",
+      "gameCode": 41,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "RS"
+      },
+      "round": 4,
+      "roundAlias": "Round 4",
+      "played": true,
+      "utcDate": "2025-10-17T19:00:00Z",
+      "local": {
+        "club": {
+          "code": "PRS",
+          "name": "Paris Basketball",
+          "abbreviatedName": "Paris",
+          "editorialName": "Paris",
+          "tvCode": "PRS",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "OLY",
+          "name": "Olympiacos Piraeus",
+          "abbreviatedName": "Olympiacos",
+          "editorialName": "Olympiacos",
+          "tvCode": "OLY",
+          "isVirtual": false
+        }
+      }
+    },
+    {
+      "identifier": "E2025_301",
+      "gameCode": 301,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "PO"
+      },
+      "round": 36,
+      "roundAlias": "Round 36",
+      "played": true,
+      "utcDate": "2026-04-22T18:00:00Z",
+      "local": {
+        "club": {
+          "code": "OLY",
+          "name": "Olympiacos Piraeus",
+          "abbreviatedName": "Olympiacos",
+          "editorialName": "Olympiacos",
+          "tvCode": "OLY",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "MAD",
+          "name": "Real Madrid",
+          "abbreviatedName": "Real Madrid",
+          "editorialName": "Real Madrid",
+          "tvCode": "MAD",
+          "isVirtual": false
+        }
+      }
+    },
+    {
+      "identifier": "E2025_380",
+      "gameCode": 380,
+      "season": {
+        "code": "E2025",
+        "alias": "2025-26"
+      },
+      "phaseType": {
+        "code": "PO"
+      },
+      "round": 38,
+      "roundAlias": "Round 38",
+      "played": false,
+      "utcDate": "2026-05-01T18:00:00Z",
+      "local": {
+        "club": {
+          "code": "MAD",
+          "name": "Real Madrid",
+          "abbreviatedName": "Real Madrid",
+          "editorialName": "Real Madrid",
+          "tvCode": "MAD",
+          "isVirtual": false
+        }
+      },
+      "road": {
+        "club": {
+          "code": "OLY",
+          "name": "Olympiacos Piraeus",
+          "abbreviatedName": "Olympiacos",
+          "editorialName": "Olympiacos",
+          "tvCode": "OLY",
+          "isVirtual": false
+        }
+      }
+    }
+  ],
+  "total": 6
+}
